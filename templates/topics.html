@@ -1,0 +1,51 @@
+{%extends 'base.html'%}
+
+{%block title%} {{board.name}} {%endblock%}
+
+{% block breadcrumb%}
+            <li class="breadcrumb-item "><a href= "{%url 'index'%}">الصفحة الرئيسية</a></li>
+            <li class="breadcrumb-item active">{{board.name}}</li>
+{%endblock%}
+
+{% block content %}
+<div class="container">
+  <h1>
+    <div class="row align-items-center">
+      <div class="col">
+        الدورات في {{board.name}}
+      </div>
+      <div class="col-auto">
+        <a class="btn btn-primary" href="{%url 'index'%}">← back</a>
+      </div>
+      
+    </div>
+  </h1>
+  <br>
+  <div class="row">
+    {% for topic in board.topics.all %}
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <video class="embed-responsive embed-responsive-16by9 " controls="controls">
+            <source src="{{ topic.video.url }}" type="video/mp4">
+          </video>
+          <br>
+          <h5 class="card-title">{{ topic.subject }}</h5>
+          <p><strong>الفيديوهات:</strong> 0</p>
+          <p><strong>المواضع:</strong> 0</p>
+          <p ><strong> القيمة:</strong> {{ topic.price }}</p>
+          {%if user.is_authenticated%}
+          <a class="btn btn-primary" href="{% url 'topic_posts' board.pk topic.pk %}">ابداء الدورة</a>
+          {%else%}
+          <a class="btn btn-primary" href="{% url 'topic_posts' board.pk topic.pk %}">سجل دخول</a>
+          {%endif%}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+</body>
+
+{% endblock %}

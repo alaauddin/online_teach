@@ -1,0 +1,49 @@
+{%extends 'base.html'%}
+
+{%block title%} Borads {%endblock%}
+
+        {%block breadcrumb%}
+            <li class="breadcrumb-item active" >الصفحة الرئيسية</li>
+            
+        {% endblock %}
+{%block content%}
+    <div class="container">
+        <div class="row">
+        
+            {%for board in boards%}
+            <div class="col-lg-4 col-md-6 col-sm-6">
+                <div class="card mb-5 shadow-sm h-100">
+                    <div class="card-body d-flex flex-column"> <!-- Added 'd-flex flex-column' classes for flexbox layout -->
+                        <div class="card-title">
+                            <div class="border p-3"> <!-- Added 'border' and 'p-3' classes for fixed-size box -->
+                                <h2>{{board.name}}</h2>
+                            </div>
+                            <img src="{{board.picture.url}}" alt="{{board.picture.url}}" width="100%" >
+                        </div>
+                        <div class="card-text mb-3 "> <!-- Added 'mb-3' class for margin-bottom -->
+                            <p>{{board.description}}</p>
+                        </div>
+                        <div class="mt-auto">
+                            <div class="row align-items-start"> <!-- Added 'align-items-start' class for vertical alignment -->
+                                <div class="col-sm-6">
+                                    <p><strong>الفيديوهات:</strong> {{board.get_posts_count}}</p>
+                                    <p><strong>المواضع:</strong> {{board.topics.count}}</p>
+                                </div>
+                                <div class="col-sm-6">
+                                    <p><strong>Last Post:</strong> {{board.get_last_post.last_created_post_date}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <a class="btn btn-primary" href="{%url 'board_topics' board.pk %}">Read More....</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            {%endfor%}
+            
+        </div>
+
+    </div>
+{% endblock %}

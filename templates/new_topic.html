@@ -1,0 +1,39 @@
+{%extends 'base.html'%}
+
+{%block title%} Create New Topic {%endblock%}
+
+{% block breadcrumb%}
+            <li class="breadcrumb-item "><a href= "{%url 'index'%}">Board</a></li>
+            <li class="breadcrumb-item "><a href="{% url 'board_topics' board.pk%}">{{board.name}}</a></li>
+            <li class="breadcrumb-item active">New Topic</li>
+{%endblock%}
+
+{% block content %}
+      <div class="container">
+        <h1 class="text-center logo my-4">
+          <a href="{% url 'index' %}">Discussion Boards of NED UET</a>
+        </h1>
+        <div class="row justify-content-center">
+          <div class="col-lg-8 col-md-10 col-sm-12">
+            <div class="card">
+              <div class="card-body">
+                <div class="row align-items-center">
+                  <div class="col">
+                    <h1>New Topic</h1>
+                  </div>
+                  <div class="col-auto">
+                    <a class="btn btn-primary" href="{% url 'board_topics' board.pk%}">← Back</a>
+                  </div>
+                </div>
+                
+                <form method="post" novalidate>
+                  {% csrf_token %}
+                  {% include 'includes/form.html' %}
+                  <button type="submit" class="btn btn-primary btn-block">Create a Topic</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+{% endblock %}

@@ -1,0 +1,127 @@
+{% load static %}
+
+
+
+<html lang="en">
+<head>
+  <title>الصفحة الرئيسية</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-RoxolCzYK/gpz/gVRRm6i5g3Rs5iUbeBji2KUtJpjvt0a+ylVyM3BQ8yPL1jYrUHnnEkXjRmVDFCCv2PFS/nLw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <style>
+      .item-image {
+          width: 200px;
+          height: 200px;
+          object-fit: cover;
+          object-position: center;
+      }
+      .category-btn {
+          display: inline-block;
+          margin-right: 10px;
+      }
+      
+  </style>
+
+</head>
+<body>
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+        <div class="container">
+           <div class="col ">
+             <div class="text-start col-md-6 text-right">
+               <a href="{% url 'index' %}"><img src ="" class="navbar-brand"></a>
+             </div>
+             <div class="text-start col-md-6 text-right">
+                
+                 <h1><a class="navbar-brand text-center" href="{% url 'index' %}">Borhan</a></h1>
+               
+             </div>
+         </div>
+             
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainMenu" aria-controls="mainMenu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="mainMenu">
+            {%if user.is_authenticated%}
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item mt-3">
+                <a class="nav-link " href="{% url 'solved_assignment' %}"> my solved assignments</a>
+              </li>
+              <li class="nav-item mt-3">
+                <a class="nav-link " href="#" data-toggle="modal" data-target="#assignmentModal">Solve my assignment</a>
+              </li>
+              <li class="nav-item dropdown mt-1">
+                <a class="nav-link dropdown-toggle" href="#" id="userMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  
+                   {{ user.username }} مرحباً
+                  <img class="icon" src="{% static 'icon/userIcon.png' %}" alt="User Icon" style="height: 50px ; width: 50px;">
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
+                  <a class="dropdown-item" href="#">My account</a>
+                  <a class="dropdown-item" href="{%url 'password_change'%}">Change password</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="{% url 'logout' %}">Log out</a>
+                  
+                </div>
+              </li>
+            </ul>
+              {%else%}
+              <form class="form-inline ml-auto">
+              <a href="{%url 'login'%}" class="btn btn-outline-secondary">login</a>
+              <a href="{%url 'signup'%}" class="btn btn-outline-secondary">Signup</a>
+              </form>
+                  {%endif%}
+      
+          </div>
+      
+          
+        
+    </nav>
+    <div class="container my-5">
+        <ol class="breadcrumb" >
+          
+            {%block breadcrumb%}
+            {% endblock %}
+        </ol> 
+    </div>
+          
+    
+    <div class="modal fade" id="assignmentModal" tabindex="-1" role="dialog" aria-labelledby="assignmentModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="assignmentModalLabel">Solve My Assignment</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!-- Place your assignment submission form here -->
+            <form method="post" action="{% url 'submit_assignment' %}" enctype="multipart/form-data">
+              {% csrf_token %}
+              <!-- Include the necessary form fields -->
+              <div class="form-group">
+                <label for="file">File</label>
+                <input type="file" class="form-control" id="file" name="file" required>
+              </div>
+              <div class="form-group">
+                <label for="end_date">End Date</label>
+                <input type="date" class="form-control" id="end_date" name="end_date" required>
+              </div>
+              <a href="https://wa.me/923108701164?text=تم الاشتراك, اشترك رقم" target="_blank">io</a>
+              <button type="submit" class="btn btn-primary">Submit</button>
+              
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% block content %}
+
+    {% endblock %}
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+
+</html>

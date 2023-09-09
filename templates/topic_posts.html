@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ topic.subject }}{% endblock %}
+{% block breadcrumb %}
+  <li class="breadcrumb-item"><a href="{% url 'index' %}">الصفحة الرئيسية</a></li>
+  <li class="breadcrumb-item"><a href="{% url 'board_topics' topic.board.pk %}">{{ topic.board.name }}</a></li>
+  <li class="breadcrumb-item active">{{ topic.subject }}</li>
+{% endblock %}
+
+{% block content %}
+  {% for post in topic.posts.all %}
+    <div class="container mt-4">
+      <div class="card">
+        <div class="card-header">
+          <div class="d-flex align-items-center">
+            <img src="{% static 'icon/userImage.png' %}" alt="{{ post.created_by.username }}" class="mr-2" width="50" height="50">
+            <div>
+              <h5 class="card-title">{{ post.created_by.username }}</h5>
+              <span class="text-muted">{{ post.created_dt }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <p class="card-text">{{ post.message }}</p>
+          
+          <div class="row">
+            <div class="col-md-12 ">
+              <video class="embed-responsive embed-responsive-16by9 " controls="controls">
+                <source src="{{ post.video.url }}" type="video/mp4">
+              </video>
+            </div>
+            <p></p>
+          </div>
+        </div>
+        <div class="card-footer text-muted">
+          <div class="row">
+            <div class="col-md-6">
+              <form method="post" action="{% url 'topic_posts' board_id=topic.board.pk topic_id=topic.pk %}">
+                {% csrf_token %}
+                <input type="hidden" name="like_post_id" value="{{ post.id }}">
+                <button type="submit" class="btn btn-primary">
+                  {% if request.user in post.likes.all %}
+                    Unlike
+                  {% else %}
+                    Like
+                  {% endif %}
+                </button>
+                
+                <br>
+                
+              </form>
+              
+            </div>
+          
+            <div class="col-md-6 text-right">
+              <span class="text-muted">{{ post.likes.count }} likes</span>
+              <img src="{% static 'icon/like.png' %}" alt="Like" width="20" height="20">
+            </div>
+            
+                <div class="comment border p-3 col-12">
+                  <div class="modal-body">
+                    <form id="commentForm" method="post" action="{% url 'add_comment' post.id %}">
+                      {% csrf_token %}
+                      <div class="row border rounded-pill">
+                        <div class="col-md-">
+                          <button type="submit" class="btn btn-primary rounded-pill">Comment</button>
+                        </div>
+                        <div class="col-md">
+                          <textarea name="content" class="form-control rounded-pill text-right" rows="1" required></textarea>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                  
+                  {% for comment in post.comments.all %}
+                  <div class="d-flex flex-column ">
+                      <div class="comment-details border p-2 m-2">
+                          <div class="border p-3   ">
+                            <img src="{% static 'icon/userImage.png' %}" alt="{{ post.created_by.username }}" class="mr-2" width="50" height="50">
+                            <span class="comment-author px-3">{{ comment.created_by.username }}</span>
+                            <span class="comment-date px-2">{{ comment.created_dt }}</span>
+                          </div>
+                          <p class=" text-right border p-4">{{ comment.content }}</p>
+                      </div>
+                      
+                      {% empty %}
+                      <div class="border p-3 col-12">
+                        <p>No comments yet.</p>
+                      </div>
+                      
+                      
+                  </div>
+                  
+                  
+                  {% endfor %}
+                  
+              </div>
+              
+              
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+    
+  {% endfor %}
+  
+  
+{% endblock %}

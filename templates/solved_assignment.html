@@ -1,0 +1,46 @@
+{%extends 'base.html'%}
+
+{%block title%} Borads {%endblock%}
+
+        {%block breadcrumb%}
+            <li class="breadcrumb-item active" >الصفحة الرئيسية</li>
+            
+        {% endblock %}
+{%block content%}
+<div class="container">
+    <h2>Assignment Table</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Submitted Date</th>
+                <th>File</th>
+                <th>End Date</th>
+                <th>Solved</th>
+                <th>Solution</th>
+            </tr>
+        </thead>
+        <tbody>
+            {%for i in assign%}
+            <tr>
+                <td>{{ i.user }}</td>
+                <td>{{ i.submitted_date }}</td>
+                <td>{{ i.file }}</td>
+                <td>{{ i.end_date }}</td>
+                <td>{{ i.solved }}</td>
+                <td>
+                    {% if i.sol %}
+                        <a href="{{ i.sol.url }}" download>Download Solution</a>
+                    {% else %}
+                        No solution available
+                    {% endif %}
+                </td>
+            </tr>
+            {%endfor%}
+            <!-- Repeat the above <tr> block for each assignment row -->
+        </tbody>
+    </table>
+</div>
+
+   
+{% endblock %}

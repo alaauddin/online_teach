@@ -1,0 +1,61 @@
+{%extends 'base.html'%}
+
+{%block title%} Create New Topic {%endblock%}
+
+{% block breadcrumb %}
+    <div style="text-align: center;">
+        <h2>الاشتراك </h2>
+    </div>
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 col-md-10 col-sm-12">
+        <div class="card">
+          <div class="card-body">
+            <h3 class="card-title text-right">اشترك في {{topic.subject}} </h3>
+            <h6 class="text-right">السعر : {{topic.price}}</h6>
+            
+            <form method="post" novalidate>
+              {% csrf_token %}
+              <input type="hidden" name="next" value="{{ next }}">
+              {% include 'includes/form.html' %}
+              {%if not subscribes %}
+              <button type="submit" class="btn btn-primary btn-block">أشتراك</button>
+              {%endif%}
+            </form>
+            
+              <table class="table">
+                  <thead>
+                      <tr>
+                          <th>Course</th>
+                          <th>Start Date</th>
+                          <th>End Date</th>
+                          <th>Approved</th>
+                          <th>Expired</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                    
+                      <tr>
+                          <td>{{subscribes.topic}}</td>
+                          <td>{{subscribes.start_date}}</td>
+                          <td>{{subscribes.end_date}}</td>
+                          <td>{{subscribes.is_approved}}</td>
+                          <td>{{subscribes.expired}}</td>
+                      </tr>
+                   
+                  </tbody>
+              </table>
+          </div>
+          <div class="card-footer text-muted text-center">
+            <a href="https://wa.me/923108701164?text=تم الاشتراك, اشترك رقم {{subscribes.id}}">تواصل بنا عبر الوتساب </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
